@@ -1,6 +1,5 @@
 import 'package:employee_management/utils/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
@@ -35,23 +34,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class ClipPathClass extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.moveTo(0, size.height / 2);
-    path.quadraticBezierTo(size.width / 2, size.height, size.width, size.height / 2);
-
-    
-    // canvas.drawPath(path, paint);
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
-
 class Splash extends StatelessWidget {
   const Splash({Key? key}) : super(key: key);
 
@@ -62,36 +44,24 @@ class Splash extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: kPrimaryColor,
-        body: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                height: size.height * 0.2,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              height: 100,
+            ),
+            Center(
+              child: Image.asset('assets/images/company.png'),
+            ),
+            Expanded(
+              child: SvgPicture.asset(
+                'assets/svg/Subtract.svg',
+                fit: BoxFit.cover,
+                height: double.infinity,
+                width: double.infinity,
               ),
-              Center(
-                child: Image.asset('assets/images/company.png'),
-              ),
-              Expanded(
-                child: Container(
-                  alignment: Alignment.center,
-                  child: ClipPath(
-                    clipper: ClipPathClass(),
-                    child: SizedBox(
-                      child: Container(
-                        alignment: Alignment.bottomCenter,
-                        decoration: BoxDecoration(
-                            color: Color.fromRGBO(25, 200, 255, 1),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                topRight: Radius.circular(30))),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ));
   }
 }
