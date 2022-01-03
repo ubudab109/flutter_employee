@@ -6,12 +6,17 @@ import 'package:employee_management/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class Auth extends StatelessWidget {
+class Auth extends StatefulWidget {
   @override
   const Auth({
     Key? key,
   });
 
+  @override
+  State<Auth> createState() => _AuthState();
+}
+
+class _AuthState extends State<Auth> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
