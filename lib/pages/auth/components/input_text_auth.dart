@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
-import 'package:auto_size_text_field/auto_size_text_field.dart';
+import 'package:flutter/cupertino.dart';
 
 class InputTextAuth extends StatelessWidget {
 
