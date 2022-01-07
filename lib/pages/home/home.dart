@@ -1,9 +1,13 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:employee_management/pages/home/components/card_attendance_time.dart';
+import 'package:employee_management/pages/home/components/menu_icon_home.dart';
+import 'package:employee_management/pages/home/components/user_information.dart';
 import 'package:employee_management/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -44,6 +48,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: themePrimayColor,
       body: WillPopScope(
         onWillPop: () async {
           if (_navigatorKey.currentState!.canPop()) {
@@ -108,80 +113,105 @@ class HomeMain extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+        backgroundColor: themePrimayColor,
         body: ListView(
           shrinkWrap: true,
+          scrollDirection: Axis.vertical,
           children: <Widget>[
-            Stack(
-              children: <Widget>[
-                Container(
-                  width: double.infinity,
-                  height: size.height * 0.2,
-                  decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20),
-                      ),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0xFF02b4eb),
-                          Color(0xFFb4ecfe),
-                        ],
-                      )),
-                  child: UserInformationWidget(size: size),
-                ),
-                Positioned(
-                    top: size.height * 0.15,
-                    left: size.width * .04,
-                    child: CardAttendanceTime(
-                      size: size,
-                      dateFormat: date,
-                      days: days,
-                    )),
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  height: size.height * 0.5,
-                  width: double.infinity,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const <Widget>[
-                      MenuIconHome(
-                        onPressed: null,
-                        icon: 'jadwal_kerja.png',
-                        iconName: 'Jadwal Kerja',
-                      ),
-                      MenuIconHome(
-                        onPressed: null,
-                        icon: 'Gaji.png',
-                        iconName: 'Gaji',
-                      ),
-                      MenuIconHome(
-                        onPressed: null,
-                        icon: 'Paidleave.png',
-                        iconName: 'Request Jadwal',
-                      ),
-                      MenuIconHome(
-                        onPressed: null,
-                        icon: 'Bonus.png',
-                        iconName: 'Bonus',
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
             Container(
-              child: ListView(
-                children: [
+              color: kPrimaryColor,
+              height: size.height * 0.48,
+              width: double.infinity,
+              child: Stack(
+                children: <Widget>[
                   Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: Text("List 2.1"),
+                    width: double.infinity,
+                    height: size.height * 0.2,
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0xFF02b4eb),
+                            Color(0xFFb4ecfe),
+                          ],
+                        )),
+                    child: Stack(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(bottom: size.height * 0.05),
+                          child: UserInformationWidget(size: size),
+                        )
+                      ],
+                    ),
                   ),
+                  Positioned(
+                      top: size.height * 0.15,
+                      left: size.width * .032,
+                      child: CardAttendanceTime(
+                        size: size,
+                        dateFormat: date,
+                        days: days,
+                      )),
                   Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: Text("List 2.2"),
+                    alignment: Alignment.bottomCenter,
+                    height: size.height * 0.43,
+                    width: double.infinity,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: const <Widget>[
+                        MenuIconHome(
+                          onPressed: null,
+                          icon: 'jadwal_kerja.png',
+                          iconName: 'Jadwal Kerja',
+                        ),
+                        MenuIconHome(
+                          onPressed: null,
+                          icon: 'Gaji.png',
+                          iconName: 'Gaji',
+                        ),
+                        MenuIconHome(
+                          onPressed: null,
+                          icon: 'Paidleave.png',
+                          iconName: 'Request Jadwal',
+                        ),
+                        MenuIconHome(
+                          onPressed: null,
+                          icon: 'Bonus.png',
+                          iconName: 'Bonus',
+                        ),
+                      ],
+                    ),
                   ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: size.height * 0.015,
+            ),
+            // CALENDER
+            Container(
+              color: kPrimaryColor,
+              height: size.height * 0.7,
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Center(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(top: 10, left: 7, right: 5),
+                      child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        margin: const EdgeInsets.all(8.0),
+                        child: CalenderCompany(size: size),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -190,42 +220,8 @@ class HomeMain extends StatelessWidget {
   }
 }
 
-class MenuIconHome extends StatelessWidget {
-  const MenuIconHome({
-    Key? key,
-    this.onPressed,
-    required this.iconName,
-    required this.icon,
-  }) : super(key: key);
-
-  final VoidCallback? onPressed;
-  final String iconName;
-  final String icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        IconButton(
-          iconSize: 50,
-          icon: Image.asset('assets/images/$icon'),
-          onPressed: () {},
-        ),
-        Text(
-          iconName,
-          style: const TextStyle(
-              fontFamily: 'RobotoRegular',
-              fontSize: 12,
-              fontWeight: FontWeight.w600),
-        )
-      ],
-    );
-  }
-}
-
-class UserInformationWidget extends StatelessWidget {
-  const UserInformationWidget({
+class CalenderCompany extends StatefulWidget {
+  const CalenderCompany({
     Key? key,
     required this.size,
   }) : super(key: key);
@@ -233,377 +229,101 @@ class UserInformationWidget extends StatelessWidget {
   final Size size;
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Container(
-          width: size.width * 0.2,
-          height: size.height * .07,
-          decoration: const BoxDecoration(
-              color: kPrimaryColor,
-              borderRadius:
-                  BorderRadius.horizontal(right: Radius.circular(30))),
-          child: Align(
-            alignment: Alignment(size.width * .001, 0),
-            child: Container(
-                width: size.width * 0.1,
-                height: size.height * 0.1,
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(
-                            "https://uselooper.com/docs/images/avatars/uifaces1.jpg")))),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(left: size.width * .05),
-          child: const ProfileInformationBar(),
-        ),
-        Container(
-            margin: EdgeInsets.only(left: size.width * 0.2),
-            padding: EdgeInsets.only(bottom: size.height * .03),
-            child: IconButton(
-              icon: SvgPicture.asset('assets/svg/bell.svg'),
-              onPressed: () {},
-            ))
-      ],
-    );
-  }
+  State<CalenderCompany> createState() => _CalenderCompanyState();
 }
 
-class ProfileInformationBar extends StatelessWidget {
-  const ProfileInformationBar({
-    Key? key,
-  }) : super(key: key);
-
+class _CalenderCompanyState extends State<CalenderCompany> {
+  CalendarFormat format = CalendarFormat.month;
+  DateTime selectedDay = DateTime.now();
+  DateTime focusedDay = DateTime.now();
+  double offsetShadow = 0;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: const <Widget>[
-        Padding(
-          padding: EdgeInsets.all(2.0),
-          child: Text(
-            'Angela san andreas',
-            style: TextStyle(
-                fontFamily: 'RobotoRegular',
-                color: kPrimaryColor,
-                fontSize: 18,
-                fontWeight: FontWeight.w600),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(2.0),
-          child: Text(
-            'Manager',
-            style: TextStyle(
-                fontFamily: 'RobotoRegular',
-                fontSize: 12,
-                fontWeight: FontWeight.w500),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(2.0),
-          child: Text(
-            'NIP : 0215445545',
-            style: TextStyle(
-                fontFamily: 'RobotoRegular',
-                fontSize: 12,
-                fontWeight: FontWeight.w500),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class CardAttendanceTime extends StatelessWidget {
-  const CardAttendanceTime({
-    Key? key,
-    required this.size,
-    required this.dateFormat,
-    required this.days,
-  }) : super(key: key);
-
-  final Size size;
-  final String dateFormat;
-  final String days;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        SizedBox(
-          height: size.height * 0.18,
-          width: size.width * .6,
-          child: Container(
-            decoration: BoxDecoration(
-              color: kPrimaryColor,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: const Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: Column(
-              children: <Widget>[
-                // CURRENT DATE WIDGET
-                Row(
-                  children: <Widget>[
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 10, left: 5, right: 5),
-                      child: Container(
-                        height: size.height * .03,
-                        width: size.width * 0.2,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFF008836),
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(5),
-                              bottomLeft: Radius.circular(5)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Text(
-                            days,
-                            style: const TextStyle(
-                                color: kPrimaryColor,
-                                fontFamily: "RobotoRegular",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                      ),
-                      child: Container(
-                        height: size.height * .03,
-                        width: size.width * 0.33,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color: const Color.fromRGBO(196, 196, 196, 1),
-                                width: 1)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Text(
-                            dateFormat.toString(),
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontFamily: "RobotoRegular",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-
-                // ATTENDANCE TIME
-                Row(
-                  children: <Widget>[
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 10, left: 5, right: 5),
-                      child: AttendanceCompanyTime(
-                        size: size,
-                        eclipse: 'eclipse_green.png',
-                        time: '09.00',
-                        timeType: 'Jam Masuk',
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 10, left: 5, right: 5),
-                      child: AttendanceCompanyTime(
-                        size: size,
-                        eclipse: 'eclipse_red.png',
-                        time: '18.00',
-                        timeType: 'Jam Keluar',
-                      ),
-                    )
-                  ],
-                ),
-
-                // ATTENDANCE NOTICE
-                // USING CONDITIONAL HERE
-                const AttendanceTimeNotice()
-              ],
-            ),
-            margin: EdgeInsets.only(right: size.width * .01),
-          ),
-        ),
-        SizedBox(
-          height: size.height * 0.18,
-          width: size.width * .33,
-          child: Container(
-            decoration: BoxDecoration(
-              color: kPrimaryColor,
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(10),
-                bottomRight: Radius.circular(10),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: const Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: const AttendanceCountdown(),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class AttendanceCountdown extends StatelessWidget {
-  const AttendanceCountdown({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        const Text(
-          'Waktu',
-          style: TextStyle(
-              fontFamily: 'RobotoRegular',
-              fontSize: 14,
-              fontWeight: FontWeight.w600),
-        ),
-        const Text(
-          '00.00.00',
-          style: TextStyle(
-              fontFamily: 'RobotoRegular',
-              fontSize: 17,
-              fontWeight: FontWeight.w700),
-        ),
-        ElevatedButton(
-            onPressed: () {},
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(kBluePrimary),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ))),
-            child: const Text('Clock Out',
-                style: TextStyle(
-                    fontFamily: 'RobotoRegular',
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700)))
-      ],
-    );
-  }
-}
-
-class AttendanceTimeNotice extends StatelessWidget {
-  const AttendanceTimeNotice({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: 10, left: 5, right: 5),
-          child: Image.asset('assets/images/speaker.png'),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 10, left: 1, right: 5),
-          child: Text(
-            'Silahkan Absen Terlebih Dahulu',
-            style: TextStyle(
-                color: Colors.red,
-                fontFamily: 'RobotoRegular',
-                fontWeight: FontWeight.w600,
-                fontSize: 12),
-          ),
-        )
-      ],
-    );
-  }
-}
-
-class AttendanceCompanyTime extends StatelessWidget {
-  const AttendanceCompanyTime({
-    Key? key,
-    required this.size,
-    required this.eclipse,
-    required this.timeType,
-    required this.time,
-  }) : super(key: key);
-
-  final Size size;
-  final String eclipse;
-  final String timeType;
-  final String time;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          timeType,
-          style: const TextStyle(
-              fontFamily: 'RobotoRegular',
-              fontSize: 13,
-              fontWeight: FontWeight.w600),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: size.height * .01),
-          width: size.width * 0.2,
+    return TableCalendar(
+      locale: 'id_ID',
+      firstDay: DateTime.utc(2010, 10, 16),
+      lastDay: DateTime.utc(2030, 3, 14),
+      focusedDay: DateTime.now(),
+      startingDayOfWeek: StartingDayOfWeek.sunday,
+      daysOfWeekVisible: true,
+      headerStyle: const HeaderStyle(
           decoration: BoxDecoration(
-              color: const Color(0XFFFFFFFF),
-              borderRadius: BorderRadius.circular(5),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: const Offset(0, 3), // changes position of shadow
-                ),
-              ]),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Image.asset('assets/images/$eclipse'),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text(time,
-                    style: const TextStyle(
-                        fontFamily: 'RobotoRegular',
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600)),
-              )
-            ],
+            color: Color(0XFFFF6161),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
-        ),
-      ],
+          formatButtonVisible: false,
+          titleCentered: true,
+          formatButtonShowsNext: true,
+          titleTextStyle: TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+          headerMargin: EdgeInsets.only(bottom: 10)),
+      calendarFormat: format,
+      onFormatChanged: (CalendarFormat _format) {
+        setState(() {
+          format = _format;
+        });
+      },
+      rowHeight: widget.size.height * .05,
+
+      // Day Changed
+      onDaySelected: (DateTime selectDay, DateTime focusDay) {
+        setState(() {
+          selectedDay = selectDay;
+          focusedDay = focusDay;
+          offsetShadow = selectedDay.day == DateTime.now().day ? 0 : -2;
+        });
+      },
+      selectedDayPredicate: (day) {
+        return isSameDay(selectedDay, day);
+      },
+
+      // Calender Style
+      calendarStyle: CalendarStyle(
+        isTodayHighlighted: true,
+        selectedDecoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: selectedDay.day == DateTime.now().day
+                ? const Color(0XFFFF8383)
+                : Colors.transparent),
+        selectedTextStyle: TextStyle(
+            color: selectedDay.day == DateTime.now().day
+                ? Colors.white
+                : Colors.transparent,
+            shadows: [Shadow(offset: Offset(0, offsetShadow))],
+            textBaseline: TextBaseline.ideographic,
+            decoration: TextDecoration.underline,
+            decorationStyle: TextDecorationStyle.solid,
+            decorationThickness: 3,
+            decorationColor: const Color(0XFF34C759)),
+        todayDecoration: const BoxDecoration(
+            color: Color(0XFFFF8383), shape: BoxShape.circle),
+      ),
+
+      daysOfWeekStyle: const DaysOfWeekStyle(
+        weekdayStyle:
+            TextStyle(fontFamily: 'RobotoRegular', fontWeight: FontWeight.w700),
+        weekendStyle:
+            TextStyle(fontFamily: 'RobotoRegular', fontWeight: FontWeight.w700),
+      ),
+      // Calender Builders
+      calendarBuilders: CalendarBuilders(
+        dowBuilder: (context, day) {
+          if (day.weekday == DateTime.sunday) {
+            final text = DateFormat.E('id_ID').format(day);
+
+            return Center(
+              child: Text(
+                text,
+                style: const TextStyle(
+                    fontFamily: 'RobotoRegular',
+                    fontWeight: FontWeight.w700,
+                    color: Colors.red),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }
