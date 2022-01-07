@@ -41,7 +41,7 @@ class InputTextAuth extends StatelessWidget {
               ),
             ),
           ),
-          Container(
+          SizedBox(
             height: 60,
             child: TextField(
               decoration: InputDecoration(

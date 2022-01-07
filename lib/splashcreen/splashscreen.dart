@@ -1,5 +1,4 @@
 import 'package:employee_management/pages/auth/auth.dart';
-import 'package:employee_management/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -14,11 +13,11 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 4), () {
       Navigator.push(
         context,
         PageRouteBuilder(
-          pageBuilder: (c, a1, a2) => Auth(),
+          pageBuilder: (c, a1, a2) => const Auth(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(0.0, 1.0);
             const end = Offset.zero;
@@ -35,7 +34,7 @@ class _SplashscreenState extends State<Splashscreen> {
               child: child,
             );
           },
-          transitionDuration: Duration(milliseconds: 2000),
+          transitionDuration: const Duration(milliseconds: 2000),
         ),
       );
     });

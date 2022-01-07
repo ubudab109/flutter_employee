@@ -1,8 +1,6 @@
-import 'package:employee_management/pages/auth/auth.dart';
 import 'package:employee_management/splashcreen/splashscreen.dart';
 import 'package:employee_management/utils/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
   runApp(const MyApp());

@@ -1,7 +1,8 @@
 // ignore_for_file: use_key_in_widget_constructors
 
-import 'package:employee_management/pages/auth/components/ForgotPassword.dart';
+import 'package:employee_management/pages/auth/components/forgot_password.dart';
 import 'package:employee_management/pages/auth/components/input_text_auth.dart';
+import 'package:employee_management/pages/home/home.dart';
 import 'package:employee_management/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -43,14 +44,20 @@ class _AuthState extends State<Auth> {
                   SizedBox(height: size.height * 0.05),
                   const InputTextAuth(label: 'No Hp/Email', isPassword: false),
                   const InputTextAuth(label: 'Password', isPassword: true),
-                  ForgotPassword(),
+                  const ForgotPassword(),
                   Container(
                       padding: EdgeInsets.only(top: 10, left: size.width * 0.7),
                       child: ElevatedButton(
-                        child: Text('Masuk'),
-                        onPressed: () {},
+                        child: const Text('Masuk'),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (c, a1, a2) => const MyApp(),
+                              ));
+                        },
                         style: ElevatedButton.styleFrom(
-                            primary: Color.fromRGBO(25, 200, 255, 1),
+                            primary: const Color.fromRGBO(25, 200, 255, 1),
                             textStyle: const TextStyle(
                                 fontFamily: 'RobotoRegular',
                                 fontWeight: FontWeight.w700,
