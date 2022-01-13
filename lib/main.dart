@@ -3,11 +3,11 @@ import 'package:employee_management/utils/constant.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const Main());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Main extends StatelessWidget {
+  const Main({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Employee Management Attendence',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          backgroundColor: kPrimaryColor, primaryColor: kPrimaryColor),
+          backgroundColor: themePrimayColor, primaryColor: themePrimayColor),
       home: const Scaffold(
         backgroundColor: kPrimaryColor,
         body: Splashscreen(),

@@ -1,37 +1,33 @@
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+// ignore_for_file: prefer_const_constructors
+
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:employee_management/pages/home/components/carousel_hightlight.dart';
+import 'package:employee_management/pages/home/components/noted_data.dart';
+import 'package:flutter/material.dart';
+import 'package:employee_management/global_components/company_calender.dart';
 import 'package:employee_management/pages/home/components/card_attendance_time.dart';
 import 'package:employee_management/pages/home/components/menu_icon_home.dart';
+import 'package:employee_management/pages/home/components/note_text_field.dart';
 import 'package:employee_management/pages/home/components/user_information.dart';
 import 'package:employee_management/utils/constant.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+class HomeMain extends StatefulWidget {
+  const HomeMain({Key? key})
+      : super(key: key);
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<HomeMain> createState() => _HomeMainState();
 }
 
-class _MyAppState extends State<MyApp> {
-  final _navigatorKey = GlobalKey<NavigatorState>();
-
-  void onTapNav(index) {
-    switch (index) {
-      case 0:
-        _navigatorKey.currentState!.pushNamed('/');
-        break;
-      case 1:
-        _navigatorKey.currentState!.pushNamed('/home2');
-        break;
-      case 2:
-        _navigatorKey.currentState!.pushNamed('/home3');
-        break;
-    }
-  }
+class _HomeMainState extends State<HomeMain> {
+  int activeIndexCarousel = 0;
+  CalendarFormat format = CalendarFormat.month;
+  DateTime selectedDay = DateTime.now();
+  DateTime focusedDay = DateTime.now();
+  double offsetShadow = 0;
+  bool isDaySelected = false;
 
   late String dateFormat;
   late String days;
@@ -45,79 +41,36 @@ class _MyAppState extends State<MyApp> {
     days = DateFormat('EEEE', 'id_ID').format(now);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: themePrimayColor,
-      body: WillPopScope(
-        onWillPop: () async {
-          if (_navigatorKey.currentState!.canPop()) {
-            _navigatorKey.currentState!.pop();
-            return false;
-          }
-          return true;
-        },
-        child: Navigator(
-          key: _navigatorKey,
-          initialRoute: '/',
-          onGenerateRoute: (RouteSettings settings) {
-            WidgetBuilder builder;
-            switch (settings.name) {
-              case '/':
-                builder = (BuildContext context) => HomeMain(
-                      date: dateFormat,
-                      days: days,
-                    );
-                break;
-              case '/home2':
-                builder = (BuildContext context) => const HomeTwo();
-                break;
-              case '/home3':
-                builder = (BuildContext context) => const HomeTrhee();
-                break;
-              default:
-                throw Exception('Invalid Route : ${settings.name}');
-            }
-            return MaterialPageRoute(
-              builder: builder,
-              settings: settings,
-            );
-          },
-        ),
-      ),
-      bottomNavigationBar: ConvexAppBar(
-        height: MediaQuery.of(context).size.height * 0.1,
-        backgroundColor: kBluePrimary,
-        style: TabStyle.react,
-        items: [
-          TabItem(icon: SvgPicture.asset('assets/svg/HomeS.svg')),
-          TabItem(icon: SvgPicture.asset('assets/svg/qrscans.svg')),
-          TabItem(icon: SvgPicture.asset('assets/svg/Profile.svg')),
-        ],
-        initialActiveIndex: 0,
-        onTap: (int i) => onTapNav(i),
-      ),
-    );
-  }
-}
+  List<Widget> notedData = <Widget>[
+    NotedData(
+      notedValue:
+          'Jam 14:00asdfasdfasdfasdfsdafasdfsdafsdafasdfasdfsadfdsafsadfds',
+    ),
+    NotedData(
+      notedValue: 'Jam 14:00. Maen Valorant',
+    ),
+  ];
 
-class HomeMain extends StatelessWidget {
-  const HomeMain({Key? key, required this.date, required this.days})
-      : super(key: key);
+  List images = [
+    'https://wallpaperaccess.com/full/14358.jpg',
+    'https://wallpapers-hub.art/wallpaper-images/54669.jpg',
+    'https://wallpaperforu.com/wp-content/uploads/2020/04/10127071920x1200.jpg'
+  ];
 
-  final String date;
-  final String days;
+  CarouselController controllerDot = CarouselController();
+  final _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: themePrimayColor,
         body: ListView(
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
           children: <Widget>[
+            // TOP CONTENT
             Container(
               color: kPrimaryColor,
               height: size.height * 0.48,
@@ -154,7 +107,7 @@ class HomeMain extends StatelessWidget {
                       left: size.width * .032,
                       child: CardAttendanceTime(
                         size: size,
-                        dateFormat: date,
+                        dateFormat: dateFormat,
                         days: days,
                       )),
                   Container(
@@ -190,141 +143,201 @@ class HomeMain extends StatelessWidget {
                 ],
               ),
             ),
+            // SIZE BOX FOR SPACER
             SizedBox(
               height: size.height * 0.015,
             ),
             // CALENDER
             Container(
               color: kPrimaryColor,
-              height: size.height * 0.7,
               width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: 10, left: size.width * .04, right: 5),
+                    child: const Text(
+                      'Pengingat',
+                      style: TextStyle(
+                          fontFamily: 'RobotoRegular',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
                   Center(
                     child: Padding(
-                      padding:
-                          const EdgeInsets.only(top: 10, left: 7, right: 5),
+                      padding: const EdgeInsets.only(top: 2, left: 7, right: 5),
                       child: Card(
                         clipBehavior: Clip.antiAlias,
                         margin: const EdgeInsets.all(8.0),
-                        child: CalenderCompany(size: size),
+                        child: CompanyCalender(
+                          focusedDay: focusedDay,
+                          selectedDay: selectedDay,
+                          format: format,
+                          offsetShadow: offsetShadow,
+                          onSelectedDay:
+                              (DateTime selectDay, DateTime focusDay) {
+                            setState(() {
+                              selectedDay = selectDay;
+                              focusedDay = focusDay;
+                              isDaySelected = true;
+                              offsetShadow =
+                                  selectedDay.day == DateTime.now().day
+                                      ? 0
+                                      : -2;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 2, left: 7, right: 5),
+                      child: isDaySelected
+                          ? Container(
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(7.0),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                        color: Color.fromRGBO(0, 0, 0, 0.25),
+                                        offset: Offset(0, 2),
+                                        blurRadius: 2,
+                                        spreadRadius: 0)
+                                  ]),
+                              margin: const EdgeInsets.all(8.0),
+                              child: const NoteTextField())
+                          : null,
+                    ),
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: 2, left: 7, right: 5, bottom: size.height * .03),
+                      child: Column(
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  top: 10, left: size.width * .025, right: 5),
+                              child: const Text('Noted',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      fontFamily: 'RobotoMedium',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500)),
+                            ),
+                          ),
+                          Container(
+                              height: size.height * 0.1,
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(7.0),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                        color: Color.fromRGBO(0, 0, 0, 0.25),
+                                        offset: Offset(0, 2),
+                                        blurRadius: 2,
+                                        spreadRadius: 0)
+                                  ]),
+                              margin: const EdgeInsets.all(8.0),
+                              child: Scrollbar(
+                                hoverThickness: 2,
+                                isAlwaysShown: true,
+                                interactive: true,
+                                controller: _scrollController,
+                                thickness: 5,
+                                child: ListView.builder(
+                                  controller: _scrollController,
+                                  itemCount: notedData.length,
+                                  itemBuilder: (context, index) {
+                                    double margin = 0;
+                                    if (notedData.length > 1 &&
+                                        index != notedData.length - 1) {
+                                      margin = size.width * 0.01;
+                                    }
+                                    return ClipPath(
+                                      clipper: const ShapeBorderClipper(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)))),
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          border: Border(
+                                            left: BorderSide(
+                                                style: BorderStyle.solid,
+                                                width: 6,
+                                                color: Colors.green),
+                                          ),
+                                          // borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        margin: EdgeInsets.only(bottom: margin),
+                                        child: notedData[index],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ))
+                        ],
                       ),
                     ),
                   )
                 ],
               ),
             ),
+
+            // HIGHT LIGHT
+            SizedBox(
+              height: size.height * 0.015,
+            ),
+            Container(
+              color: kPrimaryColor,
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: 10,
+                        left: size.width * .04,
+                        right: 5,
+                        bottom: size.height * 0.02),
+                    child: const Text(
+                      'Highlight',
+                      style: TextStyle(
+                          fontFamily: 'RobotoRegular',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  CarouselHighlight(
+                    controller: controllerDot,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        activeIndexCarousel = index;
+                      });
+                    },
+                    onDotClicked: (index) {
+                      controllerDot.animateToPage(
+                        index,
+                        duration: Duration(seconds: 1),
+                        curve: Curves.ease
+                      );
+                    },
+                    activeIndexImages: activeIndexCarousel,
+                    images: images,
+                    size: size,
+                  )
+                ],
+              ),
+            ),
           ],
         ));
-  }
-}
-
-class CalenderCompany extends StatefulWidget {
-  const CalenderCompany({
-    Key? key,
-    required this.size,
-  }) : super(key: key);
-
-  final Size size;
-
-  @override
-  State<CalenderCompany> createState() => _CalenderCompanyState();
-}
-
-class _CalenderCompanyState extends State<CalenderCompany> {
-  CalendarFormat format = CalendarFormat.month;
-  DateTime selectedDay = DateTime.now();
-  DateTime focusedDay = DateTime.now();
-  double offsetShadow = 0;
-  @override
-  Widget build(BuildContext context) {
-    return TableCalendar(
-      locale: 'id_ID',
-      firstDay: DateTime.utc(2010, 10, 16),
-      lastDay: DateTime.utc(2030, 3, 14),
-      focusedDay: DateTime.now(),
-      startingDayOfWeek: StartingDayOfWeek.sunday,
-      daysOfWeekVisible: true,
-      headerStyle: const HeaderStyle(
-          decoration: BoxDecoration(
-            color: Color(0XFFFF6161),
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-          ),
-          formatButtonVisible: false,
-          titleCentered: true,
-          formatButtonShowsNext: true,
-          titleTextStyle: TextStyle(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
-          headerMargin: EdgeInsets.only(bottom: 10)),
-      calendarFormat: format,
-      onFormatChanged: (CalendarFormat _format) {
-        setState(() {
-          format = _format;
-        });
-      },
-      rowHeight: widget.size.height * .05,
-
-      // Day Changed
-      onDaySelected: (DateTime selectDay, DateTime focusDay) {
-        setState(() {
-          selectedDay = selectDay;
-          focusedDay = focusDay;
-          offsetShadow = selectedDay.day == DateTime.now().day ? 0 : -2;
-        });
-      },
-      selectedDayPredicate: (day) {
-        return isSameDay(selectedDay, day);
-      },
-
-      // Calender Style
-      calendarStyle: CalendarStyle(
-        isTodayHighlighted: true,
-        selectedDecoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: selectedDay.day == DateTime.now().day
-                ? const Color(0XFFFF8383)
-                : Colors.transparent),
-        selectedTextStyle: TextStyle(
-            color: selectedDay.day == DateTime.now().day
-                ? Colors.white
-                : Colors.transparent,
-            shadows: [Shadow(offset: Offset(0, offsetShadow))],
-            textBaseline: TextBaseline.ideographic,
-            decoration: TextDecoration.underline,
-            decorationStyle: TextDecorationStyle.solid,
-            decorationThickness: 3,
-            decorationColor: const Color(0XFF34C759)),
-        todayDecoration: const BoxDecoration(
-            color: Color(0XFFFF8383), shape: BoxShape.circle),
-      ),
-
-      daysOfWeekStyle: const DaysOfWeekStyle(
-        weekdayStyle:
-            TextStyle(fontFamily: 'RobotoRegular', fontWeight: FontWeight.w700),
-        weekendStyle:
-            TextStyle(fontFamily: 'RobotoRegular', fontWeight: FontWeight.w700),
-      ),
-      // Calender Builders
-      calendarBuilders: CalendarBuilders(
-        dowBuilder: (context, day) {
-          if (day.weekday == DateTime.sunday) {
-            final text = DateFormat.E('id_ID').format(day);
-
-            return Center(
-              child: Text(
-                text,
-                style: const TextStyle(
-                    fontFamily: 'RobotoRegular',
-                    fontWeight: FontWeight.w700,
-                    color: Colors.red),
-              ),
-            );
-          }
-        },
-      ),
-    );
   }
 }
 

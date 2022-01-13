@@ -7,25 +7,30 @@ class AttendanceTimeNotice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: 10, left: 7, right: 5),
-          child: Image.asset('assets/images/speaker.png'),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(top: 10, left: 1, right: 5),
-          child: Text(
-            'Silahkan Absen Terlebih Dahulu',
-            style: TextStyle(
-                color: Colors.red,
-                fontFamily: 'RobotoRegular',
-                fontWeight: FontWeight.w600,
-                fontSize: 12),
+    Size size = MediaQuery.of(context).size;
+    return Padding(
+      padding: EdgeInsets.only(
+        right: size.width * 0.1,
+        top: size.height * 0.01
+      ),
+      child: RichText(
+        textAlign: TextAlign.start,
+        text: TextSpan(
+          style: const TextStyle(
+          color: Colors.red,
+          fontFamily: 'RobotoRegular',
+          fontWeight: FontWeight.w600,
+          fontSize: 12
           ),
-        )
-      ],
+          children: [
+          WidgetSpan(
+            child: Image.asset('assets/images/speaker.png'),
+          ),
+          const TextSpan(
+            text: "Silahkan Absen Terlebih Dahulu",
+          ),
+        ]),
+      ),
     );
   }
 }

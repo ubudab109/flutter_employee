@@ -22,7 +22,7 @@ class CardAttendanceTime extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         SizedBox(
-          height: size.height * 0.15,
+          height: size.height * 0.16,
           width: size.width * .6,
           child: Container(
             decoration: BoxDecoration(
@@ -46,8 +46,7 @@ class CardAttendanceTime extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Padding(
-                      padding:
-                          const EdgeInsets.only(top: 10, left: 7, right: 5),
+                      padding: EdgeInsets.only(top: size.height * 0.01, left: 7, right: 5),
                       child: Container(
                         height: size.height * .03,
                         width: size.width * 0.2,
@@ -57,8 +56,7 @@ class CardAttendanceTime extends StatelessWidget {
                               topLeft: Radius.circular(5),
                               bottomLeft: Radius.circular(5)),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
+                        child: Center(
                           child: Text(
                             days,
                             style: const TextStyle(
@@ -73,7 +71,7 @@ class CardAttendanceTime extends StatelessWidget {
                     ),
                     Padding(
                       padding:
-                          const EdgeInsets.only(top: 10, left: 7, right: 5),
+                          EdgeInsets.only(top: size.height * 0.01, left: 7, right: 5),
                       child: Container(
                         height: size.height * .03,
                         width: size.width * 0.33,
@@ -81,8 +79,7 @@ class CardAttendanceTime extends StatelessWidget {
                             border: Border.all(
                                 color: const Color.fromRGBO(196, 196, 196, 1),
                                 width: 1)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
+                        child: Center(
                           child: Text(
                             dateFormat.toString(),
                             style: const TextStyle(
@@ -133,7 +130,7 @@ class CardAttendanceTime extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: size.height * 0.15,
+          height: size.height * 0.16,
           width: size.width * .33,
           child: Container(
             decoration: BoxDecoration(

@@ -1,3 +1,5 @@
+import 'package:employee_management/apps/my_app.dart';
+import 'package:employee_management/apps/repository/auth_repository.dart';
 import 'package:employee_management/pages/auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,14 +12,32 @@ class Splashscreen extends StatefulWidget {
 }
 
 class _SplashscreenState extends State<Splashscreen> {
+  AuthRepository authRepository = AuthRepository();
+  // String? token;
+  String? token;
+
+  Widget child = Auth();
+
+  getChild() async {
+    var res = await authRepository.hasToken();
+    if (res != null) {
+      if (mounted) {
+        setState(() {
+          child = MyApp();
+        });
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    getChild();
     Future.delayed(const Duration(seconds: 4), () {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-          pageBuilder: (c, a1, a2) => const Auth(),
+          pageBuilder: (c, a1, a2) => child,
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = Offset(0.0, 1.0);
             const end = Offset.zero;

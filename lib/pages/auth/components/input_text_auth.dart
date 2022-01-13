@@ -1,7 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 class InputTextAuth extends StatelessWidget {
 
@@ -9,10 +8,16 @@ class InputTextAuth extends StatelessWidget {
     Key? key,
     this.isPassword = false,
     required this.label,
+    this.validator,
+    this.onChanged,
+    this.controller
   });
 
   final bool isPassword;
   final String label;
+  final FormFieldValidator<String>? validator;
+  final ValueChanged<String>? onChanged;
+  final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -43,7 +48,10 @@ class InputTextAuth extends StatelessWidget {
           ),
           SizedBox(
             height: 60,
-            child: TextField(
+            child: TextFormField(
+              controller: controller,
+              onChanged: onChanged,
+              validator: validator,
               decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
