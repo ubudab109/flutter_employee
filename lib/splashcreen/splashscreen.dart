@@ -16,14 +16,14 @@ class _SplashscreenState extends State<Splashscreen> {
   // String? token;
   String? token;
 
-  Widget child = Auth();
+  Widget child = const Auth();
 
   getChild() async {
     var res = await authRepository.hasToken();
     if (res != null) {
       if (mounted) {
         setState(() {
-          child = MyApp();
+          child = const MyApp();
         });
       }
     }

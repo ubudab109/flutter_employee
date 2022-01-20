@@ -4,9 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class UserInformationWidget extends StatelessWidget {
+  final String fullname;
+  final String role;
+  final String nip;
   const UserInformationWidget({
     Key? key,
     required this.size,
+    required this.fullname,
+    required this.role,
+    required this.nip
   }) : super(key: key);
 
   final Size size;
@@ -37,10 +43,10 @@ class UserInformationWidget extends StatelessWidget {
         ),
         Container(
           margin: EdgeInsets.only(left: size.width * .03),
-          child: const ProfileInformationBar(),
+          child: ProfileInformationBar(fullname: fullname, role: role, nip: nip),
         ),
         Container(
-            margin: EdgeInsets.only(left: size.width * 0.22),
+            margin: EdgeInsets.only(left: size.width * 0.3),
             padding: EdgeInsets.only(bottom: size.height * .03),
             child: IconButton(
               icon: SvgPicture.asset(

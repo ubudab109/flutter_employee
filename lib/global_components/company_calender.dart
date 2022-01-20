@@ -14,7 +14,7 @@ class CompanyCalender extends StatelessWidget {
   final CalendarFormat format;
   final DateTime selectedDay;
   final DateTime focusedDay;
-
+  
   final double offsetShadow;
 
   final void Function(DateTime selectedDay, DateTime focusedDay)? onSelectedDay;
@@ -27,6 +27,7 @@ class CompanyCalender extends StatelessWidget {
       firstDay: DateTime.utc(2010, 10, 16),
       lastDay: DateTime.utc(2030, 3, 14),
       focusedDay: DateTime.now(),
+      // eventLoader: ,
       startingDayOfWeek: StartingDayOfWeek.sunday,
       daysOfWeekVisible: true,
       headerStyle: const HeaderStyle(

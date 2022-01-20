@@ -25,25 +25,6 @@ class AuthRepository {
   }
 
   /*
-   * GET USER DATA AFTER AUTH
-   * String Token
-   * return jsonResponse to UserData Model
-  */
-  Future getMyData(String token) async {
-    try {
-      var response = await http.get(
-        Uri.parse(urlBackend + 'v1/user'),
-        headers: {
-          'Authorization' : 'Bearer $token',
-          'Accepet' : 'application/json',
-        }
-      );
-      return response;
-    } catch (e) {
-      return e;
-    }
-  }
-  /*
    * LOGOUT USER
    * String token
    * return jsonResponse to LogoutAuth Model
@@ -54,7 +35,7 @@ class AuthRepository {
         Uri.parse('$urlBackend/v1/logout'),
         headers: {
           'Authorization' : 'Bearer $token',
-          'Accepet' : 'application/json',
+          'Accept' : 'application/json',
         }
       );
       return response;

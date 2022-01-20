@@ -65,7 +65,7 @@ class AuthProvider extends ChangeNotifier {
       await authRepository.unsetLocalToken();
       notifyListeners();
       Navigator.of(context, rootNavigator: true)
-          .pushReplacement(MaterialPageRoute(builder: (context) => Auth()));
+          .pushReplacement(MaterialPageRoute(builder: (context) => const Auth()));
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(data['message'])));

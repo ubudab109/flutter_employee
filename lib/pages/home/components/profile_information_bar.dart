@@ -1,9 +1,17 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:employee_management/utils/constant.dart';
 import 'package:flutter/material.dart';
 
 class ProfileInformationBar extends StatelessWidget {
+  final String fullname;
+  final String role;
+  final String nip;
   const ProfileInformationBar({
     Key? key,
+    required this.fullname,
+    required this.role,
+    required this.nip
   }) : super(key: key);
 
   @override
@@ -11,13 +19,13 @@ class ProfileInformationBar extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const <Widget>[
+      children: <Widget>[
         Padding(
           padding: EdgeInsets.all(2.0),
           child: Text(
-            'Angela san andreas',
-            style: TextStyle(
-                fontFamily: 'RobotoRegular',
+            fullname,
+            style: const TextStyle(
+                fontFamily: 'RobotoMedium',
                 color: kPrimaryColor,
                 fontSize: 18,
                 fontWeight: FontWeight.w600),
@@ -26,20 +34,20 @@ class ProfileInformationBar extends StatelessWidget {
         Padding(
           padding: EdgeInsets.all(2.0),
           child: Text(
-            'Manager',
-            style: TextStyle(
-                fontFamily: 'RobotoRegular',
-                fontSize: 12,
+            role,
+            style: const TextStyle(
+                fontFamily: 'RobotoMedium',
+                fontSize: 15,
                 fontWeight: FontWeight.w500),
           ),
         ),
         Padding(
           padding: EdgeInsets.all(2.0),
           child: Text(
-            'NIP : 0215445545',
+            'NIP : $nip',
             style: TextStyle(
-                fontFamily: 'RobotoRegular',
-                fontSize: 12,
+                fontFamily: 'RobotoMedium',
+                fontSize: 15,
                 fontWeight: FontWeight.w500),
           ),
         ),

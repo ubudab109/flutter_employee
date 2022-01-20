@@ -17,12 +17,7 @@ class NotedData extends StatelessWidget {
       controller: TextEditingController(
         text : notedValue,
       ),
-      decoration: InputDecoration(
-      
-      suffixIcon: IconButton(
-        onPressed: () {},
-        icon: Image.asset('assets/images/mines_square.png'),
-      ),
+      decoration: const InputDecoration(
       filled: true,
       fillColor: kPrimaryColor,
     ));
