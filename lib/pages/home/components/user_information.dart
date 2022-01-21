@@ -7,13 +7,15 @@ class UserInformationWidget extends StatelessWidget {
   final String fullname;
   final String role;
   final String nip;
-  const UserInformationWidget({
-    Key? key,
-    required this.size,
-    required this.fullname,
-    required this.role,
-    required this.nip
-  }) : super(key: key);
+  final String image;
+  const UserInformationWidget(
+      {Key? key,
+      required this.size,
+      required this.fullname,
+      required this.role,
+      required this.nip,
+      required this.image})
+      : super(key: key);
 
   final Size size;
 
@@ -31,19 +33,18 @@ class UserInformationWidget extends StatelessWidget {
           child: Align(
             alignment: Alignment(size.width * .001, 0),
             child: Container(
-                width: size.width * 0.13,
+                width: size.width * 0.15,
                 height: size.height * 0.2,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(
-                            "https://uselooper.com/docs/images/avatars/uifaces1.jpg")))),
+                        fit: BoxFit.fill, image: NetworkImage(image)))),
           ),
         ),
         Container(
           margin: EdgeInsets.only(left: size.width * .03),
-          child: ProfileInformationBar(fullname: fullname, role: role, nip: nip),
+          child:
+              ProfileInformationBar(fullname: fullname, role: role, nip: nip),
         ),
         Container(
             margin: EdgeInsets.only(left: size.width * 0.3),

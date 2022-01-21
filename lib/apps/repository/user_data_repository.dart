@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:employee_management/utils/constant.dart';
 import 'package:http/http.dart' as http;
 
@@ -9,16 +11,40 @@ class UserDataRepository {
   */
   Future getMyData(String token) async {
     try {
-      var response = await http.get(
-        Uri.parse('$urlBackend/v1/user'),
-        headers: {
-          'Authorization' : 'Bearer $token',
-          'Accepet' : 'application/json',
-        }
-      );
+      var response = await http.get(Uri.parse('$urlBackend/v1/user'), headers: {
+        'Authorization': 'Bearer $token',
+        'Accepet': 'application/json',
+      });
       return response;
     } catch (e) {
       return 'Server Error';
+    }
+  }
+
+  /*
+   * UPLOAD IMAGE
+   * String Token
+   * return jsonResponse
+  */
+  Future<bool> uploadPictureImages(String token, String file) async {
+    try {
+      String addimageUrl = '$urlBackend/v1/profile/picture';
+      Map<String, String> headers = {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'multipart/form-data',
+      };
+      var request = http.MultipartRequest('POST', Uri.parse(addimageUrl))
+        ..headers.addAll(headers)
+        ..files.add(await http.MultipartFile.fromPath('file', file));
+      var response = await request.send();
+      print('status kode ${response.stream}');
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
     }
   }
 }

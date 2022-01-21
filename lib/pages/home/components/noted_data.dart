@@ -11,15 +11,19 @@ class NotedData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      enabled: false,
-      maxLines: null,
-      scrollController: ScrollController(),
-      controller: TextEditingController(
-        text : notedValue,
-      ),
-      decoration: const InputDecoration(
-      filled: true,
-      fillColor: kPrimaryColor,
-    ));
+        enabled: false,
+        maxLines: null,
+        scrollController: ScrollController(),
+        style: TextStyle(
+            fontFamily: 'RobotoMedium',
+            fontSize: 12,
+            fontWeight: FontWeight.w400),
+        controller: TextEditingController(
+          text: notedValue,
+        ),
+        decoration: const InputDecoration(
+          filled: true,
+          fillColor: kPrimaryColor,
+        ));
   }
 }

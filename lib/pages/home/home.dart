@@ -34,7 +34,6 @@ class HomeMain extends StatefulWidget {
 }
 
 class _HomeMainState extends State<HomeMain> {
-
   // initialize future note data
   late Future<List<EmployeeNote>> noteDataFuture;
 
@@ -61,10 +60,13 @@ class _HomeMainState extends State<HomeMain> {
 
   // FOR CALENDER
   CalendarFormat calendarFormat = CalendarFormat.month;
-  RangeSelectionMode rangeSelectionMode = RangeSelectionMode.toggledOff; // Can be toggled on/off by longpressing a date
+  RangeSelectionMode rangeSelectionMode = RangeSelectionMode
+      .toggledOff; // Can be toggled on/off by longpressing a date
   DateTime focusedDay = DateTime.now();
-  DateTime kFirstDay = DateTime(DateTime.now().year, DateTime.now().month - 3, DateTime.now().day);
-  DateTime kLastDay = DateTime(DateTime.now().year, DateTime.now().month + 3, DateTime.now().day);
+  DateTime kFirstDay = DateTime(
+      DateTime.now().year, DateTime.now().month - 3, DateTime.now().day);
+  DateTime kLastDay = DateTime(
+      DateTime.now().year, DateTime.now().month + 3, DateTime.now().day);
   DateTime? selectedDay;
   DateTime? rangeStart;
   DateTime? rangeEnd;
@@ -75,7 +77,6 @@ class _HomeMainState extends State<HomeMain> {
   /// SCROLLABLE CONTROLLER
   CarouselController controllerDot = CarouselController();
   final _scrollController = ScrollController();
-
 
   /// FOR MODAL SHEET NOTE CREATE
   late String dateFormat;
@@ -89,11 +90,8 @@ class _HomeMainState extends State<HomeMain> {
   String colorNote = '0x0fffffff';
   // Format date in modal sheet
   final DateFormat formatterDateNote = DateFormat("EEEE, yyyy-MM-dd", "id_ID");
-  final DateFormat formatterModalNote = DateFormat("EEEE, d MMMM yyyy", "id_ID");
-  
-
-
-  
+  final DateFormat formatterModalNote =
+      DateFormat("EEEE, d MMMM yyyy", "id_ID");
 
   /// for get hash code in date time
   int getHashCode(DateTime key) {
@@ -121,9 +119,9 @@ class _HomeMainState extends State<HomeMain> {
     'https://wallpapers-hub.art/wallpaper-images/54669.jpg',
     'https://wallpaperforu.com/wp-content/uploads/2020/04/10127071920x1200.jpg'
   ];
-  
-  /// get data note or events employee 
-  /// 
+
+  /// get data note or events employee
+  ///
   /// then cast to employee note model
   Future<List<EmployeeNote>> getNoteEmployee() async {
     var token = await AuthRepository().hasToken();
@@ -151,14 +149,18 @@ class _HomeMainState extends State<HomeMain> {
   Future<EmployeeNote> createNoteEmployee() async {
     var token = await AuthRepository().hasToken();
     String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDay!);
-    var hourTime = time.hour < 10 ? '0${time.hour.toString()}' : time.hour.toString();
-    var minuteTime = time.minute < 10 ? '0${time.minute.toString()}' : time.minute.toString();
-    http.Response response = await NoteDataRepository().postNoteData(token, formattedDate, '$hourTime:$minuteTime', noteText.text, colorNote);
+    var hourTime =
+        time.hour < 10 ? '0${time.hour.toString()}' : time.hour.toString();
+    var minuteTime = time.minute < 10
+        ? '0${time.minute.toString()}'
+        : time.minute.toString();
+    http.Response response = await NoteDataRepository().postNoteData(token,
+        formattedDate, '$hourTime:$minuteTime', noteText.text, colorNote);
     return EmployeeNote.fromJson(jsonDecode(response.body)['data']);
   }
-  
+
   @override
-  void initState()  {
+  void initState() {
     super.initState();
     initializeDateFormatting();
     noteDataFuture = getNoteEmployee();
@@ -169,18 +171,19 @@ class _HomeMainState extends State<HomeMain> {
     modalDateNote = formatterModalNote.format(now).toString();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) =>  UserProvider(),),
+        ChangeNotifierProvider(
+          create: (context) => UserProvider(),
+        ),
       ],
       builder: (newContext, child) {
-        final userProvider = Provider.of<UserProvider>(newContext, listen: false);
+        final userProvider =
+            Provider.of<UserProvider>(newContext, listen: false);
         newContext.read<UserProvider>().getUserData;
         return RefreshIndicator(
           onRefresh: () async {
@@ -232,10 +235,16 @@ class _HomeMainState extends State<HomeMain> {
                                               padding: EdgeInsets.only(
                                                   bottom: size.height * 0.05),
                                               child: UserInformationWidget(
+                                                image: value.userData['data']
+                                                    ['picture'],
                                                 size: size,
-                                                fullname: value.userData['data']['fullname'],
-                                                role: value.userData['data']['role'].toUpperCase(),
-                                                nip: value.userData['data']['nip'],
+                                                fullname: value.userData['data']
+                                                    ['fullname'],
+                                                role: value.userData['data']
+                                                        ['role']
+                                                    .toUpperCase(),
+                                                nip: value.userData['data']
+                                                    ['nip'],
                                               ),
                                             )
                                           ],
@@ -254,13 +263,13 @@ class _HomeMainState extends State<HomeMain> {
                                         width: double.infinity,
                                         child: Padding(
                                           padding: EdgeInsets.only(
-                                            top: size.height * 0.33
-                                          ),
+                                              top: size.height * 0.33),
                                           child: Column(
                                             children: [
                                               Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.spaceEvenly,
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                 children: const <Widget>[
                                                   MenuIconHome(
                                                     onPressed: null,
@@ -281,7 +290,7 @@ class _HomeMainState extends State<HomeMain> {
                                                     onPressed: null,
                                                     icon: 'data_rekening.png',
                                                     iconName: 'Data Rekening',
-                                                  ),        
+                                                  ),
                                                 ],
                                               ),
                                               Padding(
@@ -295,7 +304,6 @@ class _HomeMainState extends State<HomeMain> {
                                                       icon: 'peringatan.png',
                                                       iconName: 'Peringatan',
                                                     ),
-                                                    
                                                   ],
                                                 ),
                                               )
@@ -366,8 +374,8 @@ class _HomeMainState extends State<HomeMain> {
   }
 
   /* Bottom Sheed Modal */
-  Widget _modalBottomSheet(BuildContext context, String date, Size size, StateSetter setStateModal) {
-
+  Widget _modalBottomSheet(
+      BuildContext context, String date, Size size, StateSetter setStateModal) {
     /* ON PRESSED COLOR NOTE SELECT */
     onPressedColorModal(String value) {
       setStateModal(() {
@@ -411,7 +419,7 @@ class _HomeMainState extends State<HomeMain> {
                     fontWeight: FontWeight.w500),
               ),
             ),
-            
+
             // TIME PICKER
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -492,13 +500,12 @@ class _HomeMainState extends State<HomeMain> {
                 child: Container(
                   width: size.width * 0.87,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                      color: Colors.white,
                       border: Border(
                         left: BorderSide(
                             style: BorderStyle.solid,
                             width: 4,
-                            color: Color(int.parse(colorNote))
-                        ),
+                            color: Color(int.parse(colorNote))),
                       ),
                       boxShadow: <BoxShadow>[
                         BoxShadow(
@@ -514,31 +521,30 @@ class _HomeMainState extends State<HomeMain> {
                       filled: true,
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide.none
-                      ),
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide.none),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide.none
-                      ),
+                          borderSide: BorderSide.none),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: BorderSide.none
-                      ),
-                      contentPadding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide.none),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 40, horizontal: 20),
                     ),
-                    
                     maxLength: 100,
                     maxLines: null,
-                    buildCounter: (_, {required currentLength, maxLength, required isFocused}) =>
+                    buildCounter: (_,
+                            {required currentLength,
+                            maxLength,
+                            required isFocused}) =>
                         Text(
-                              currentLength.toString() + "/" + maxLength.toString(),
-                              textAlign: TextAlign.end,
-                              style: TextStyle(
-                                fontFamily: 'RobotoMedium',
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400
-                          ),
+                      currentLength.toString() + "/" + maxLength.toString(),
+                      textAlign: TextAlign.end,
+                      style: TextStyle(
+                          fontFamily: 'RobotoMedium',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400),
                     ),
                   ),
                 )),
@@ -631,7 +637,7 @@ class _HomeMainState extends State<HomeMain> {
                     )),
               ),
             ),
-            
+
             // SAVE
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -639,8 +645,7 @@ class _HomeMainState extends State<HomeMain> {
                 Align(
                   alignment: Alignment.bottomRight,
                   child: Padding(
-                    padding:
-                        EdgeInsets.only(top: 20, right: size.width * 0.07),
+                    padding: EdgeInsets.only(top: 20, right: size.width * 0.07),
                     child: SizedBox(
                       width: 100,
                       height: 33,
@@ -654,20 +659,18 @@ class _HomeMainState extends State<HomeMain> {
                             colorNote = '0x0fffffff';
                             noteDataFuture = getNoteEmployee();
                           });
-                        } ,
+                        },
                         child: Text(
-                          'Simpan', 
+                          'Simpan',
                           style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'RobotoMedium',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500
-                          ),
-                          
+                              color: Colors.white,
+                              fontFamily: 'RobotoMedium',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
                         ),
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              kBluePrimary),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(kBluePrimary),
                         ),
                       ),
                     ),
@@ -675,7 +678,7 @@ class _HomeMainState extends State<HomeMain> {
                 )
               ],
             ),
-            
+
             SizedBox(
               height: size.height * 0.01,
             )
@@ -686,8 +689,8 @@ class _HomeMainState extends State<HomeMain> {
   }
 
   /* CALENDER MAIN */
-  Widget _calenderMain(BuildContext context, Size size, StateSetter setStateCalender) {
-
+  Widget _calenderMain(
+      BuildContext context, Size size, StateSetter setStateCalender) {
     /* SHOW MODAL BOTTOM SHEET */
     void onPressedNote(String date) {
       showModalBottomSheet(
@@ -700,7 +703,8 @@ class _HomeMainState extends State<HomeMain> {
         context: context,
         builder: (context) {
           return StatefulBuilder(
-            builder: (context, setState) =>  _modalBottomSheet(context, date, size, setState),
+            builder: (context, setState) =>
+                _modalBottomSheet(context, date, size, setState),
           );
         },
       ).whenComplete(() {
@@ -731,9 +735,9 @@ class _HomeMainState extends State<HomeMain> {
       }
     }
 
-
     /// On range selected
-    void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDays) {
+    void _onRangeSelected(
+        DateTime? start, DateTime? end, DateTime focusedDays) {
       setState(() {
         selectedDay = null;
         focusedDay = focusedDay;
@@ -743,7 +747,7 @@ class _HomeMainState extends State<HomeMain> {
       });
 
       // `start` or `end` could be null
-      
+
       if (start != null) {
         _getEventsForDay(start);
       } else if (end != null) {
@@ -752,42 +756,41 @@ class _HomeMainState extends State<HomeMain> {
     }
 
     return FutureBuilder(
-      future: noteDataFuture,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasData) {
-            final events = snapshot.data;
-            _groupEvents(events);
-            DateTime? selectedDate = selectedDay;
-            final _selectedEvents  = _groupedEvents[selectedDate] ?? [];
-            return Container(
-              color: kPrimaryColor,
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: 10,
-                        left: size.width * .04,
-                        right: 5),
-                    child: const Text(
-                      'Pengingat',
-                      style: TextStyle(
-                          fontFamily: 'RobotoRegular',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600),
+        future: noteDataFuture,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              final events = snapshot.data;
+              _groupEvents(events);
+              DateTime? selectedDate = selectedDay;
+              final _selectedEvents = _groupedEvents[selectedDate] ?? [];
+              return Container(
+                color: kPrimaryColor,
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: 10, left: size.width * .04, right: 5),
+                      child: const Text(
+                        'Pengingat',
+                        style: TextStyle(
+                            fontFamily: 'RobotoRegular',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
-                  ),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 2, left: 7, right: 5),
-                      child: Card(
-                        clipBehavior: Clip.antiAlias,
-                        margin: const EdgeInsets.all(8.0),
-                        child: 
-                        /** CALENDER */
-                        TableCalendar<EmployeeNote>(
+                    Center(
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(top: 2, left: 7, right: 5),
+                        child: Card(
+                          clipBehavior: Clip.antiAlias,
+                          margin: const EdgeInsets.all(8.0),
+                          child:
+                              /** CALENDER */
+                              TableCalendar<EmployeeNote>(
                             locale: 'id_ID',
                             firstDay: kFirstDay,
                             lastDay: kLastDay,
@@ -802,15 +805,18 @@ class _HomeMainState extends State<HomeMain> {
                                 decoration: BoxDecoration(
                                   color: Color(0XFFFF6161),
                                   borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+                                      topLeft: Radius.circular(5),
+                                      topRight: Radius.circular(5)),
                                 ),
                                 formatButtonVisible: false,
                                 titleCentered: true,
                                 formatButtonShowsNext: true,
                                 titleTextStyle: TextStyle(
-                                    color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600),
                                 headerMargin: EdgeInsets.only(bottom: 10)),
-                            calendarFormat: format, 
+                            calendarFormat: format,
                             onFormatChanged: null,
                             rowHeight: size.height * .05,
                             rangeSelectionMode: rangeSelectionMode,
@@ -823,9 +829,8 @@ class _HomeMainState extends State<HomeMain> {
                             // Calender Style
                             calendarStyle: CalendarStyle(
                               isTodayHighlighted: true,
-                              markerDecoration: BoxDecoration(
-                                color: Colors.green
-                              ),
+                              markerDecoration:
+                                  BoxDecoration(color: Colors.green),
                               selectedDecoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: selectedDay?.day == DateTime.now().day
@@ -835,26 +840,32 @@ class _HomeMainState extends State<HomeMain> {
                                   color: selectedDay?.day == DateTime.now().day
                                       ? Colors.white
                                       : Colors.transparent,
-                                  shadows: [Shadow(offset: Offset(0, offsetShadow))],
+                                  shadows: [
+                                    Shadow(offset: Offset(0, offsetShadow))
+                                  ],
                                   textBaseline: TextBaseline.ideographic,
                                   decoration: TextDecoration.underline,
                                   decorationStyle: TextDecorationStyle.solid,
                                   decorationThickness: 3,
                                   decorationColor: const Color(0XFF34C759)),
                               todayDecoration: const BoxDecoration(
-                                  color: Color(0XFFFF8383), shape: BoxShape.circle),
+                                  color: Color(0XFFFF8383),
+                                  shape: BoxShape.circle),
                             ),
                             daysOfWeekStyle: const DaysOfWeekStyle(
-                              weekdayStyle:
-                                  TextStyle(fontFamily: 'RobotoRegular', fontWeight: FontWeight.w700),
-                              weekendStyle:
-                                  TextStyle(fontFamily: 'RobotoRegular', fontWeight: FontWeight.w700),
+                              weekdayStyle: TextStyle(
+                                  fontFamily: 'RobotoRegular',
+                                  fontWeight: FontWeight.w700),
+                              weekendStyle: TextStyle(
+                                  fontFamily: 'RobotoRegular',
+                                  fontWeight: FontWeight.w700),
                             ),
                             // Calender Builders
                             calendarBuilders: CalendarBuilders(
                               dowBuilder: (context, day) {
                                 if (day.weekday == DateTime.sunday) {
-                                  final text = DateFormat.E('id_ID').format(day);
+                                  final text =
+                                      DateFormat.E('id_ID').format(day);
                                   return Center(
                                     child: Text(
                                       text,
@@ -866,176 +877,175 @@ class _HomeMainState extends State<HomeMain> {
                                   );
                                 }
                               },
-                              
                             ),
                           ),
+                        ),
                       ),
                     ),
-                  ),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 2, left: 7, right: 5),
-                      child: Align(
-                          alignment: Alignment.topRight,
-                          child: NoteButton( onPressed: () => onPressedNote(modalDateNote))),
-                    ),
-                  ),
-                  Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          top: 2,
-                          left: 7,
-                          right: 5,
-                          bottom: size.height * .03),
-                      child: Column(
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 10,
-                                  left: size.width * .025,
-                                  right: 5),
-                              child: const Text('Noted',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      fontFamily: 'RobotoMedium',
-                                      fontSize: 18,
-                                      fontWeight:FontWeight.w500)),
-                            ),
-                          ),
-                          Container(
-                              height: size.height * 0.06,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:BorderRadius.circular(7.0),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color:Color.fromRGBO(0, 0, 0,0.25),
-                                        offset:Offset(0, 2),
-                                        blurRadius: 2,
-                                        spreadRadius: 0)
-                                  ]),
-                              margin:const EdgeInsets.all(8.0),
-                              child: _selectedEvents.isEmpty ? 
-                              ClipPath(
-                                  clipper: const ShapeBorderClipper(shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10)))),
-                                  child: Container(
-                                      decoration:
-                                      BoxDecoration(
-                                        border: Border(
-                                          left: BorderSide(
-                                              style: BorderStyle.solid,
-                                              width: 6,
-                                              color: Colors.white
-                                          ),
-                                        ),
-                                        // borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      margin: EdgeInsets.only( bottom: 1 ),
-                                      child: NoteDataEmpty()
-                                      ),
-                                  ) : 
-                              Scrollbar(
-                                hoverThickness: 2,
-                                isAlwaysShown: true,
-                                interactive: true,
-                                controller:_scrollController,
-                                thickness: 5,
-                                child: ListView.builder(
-                                  controller: _scrollController,
-                                  itemCount: _selectedEvents.length,
-                                  itemBuilder: (context, index) {
-                                    EmployeeNote note = _selectedEvents[index];
-                                     return ClipPath(
-                                      clipper: const ShapeBorderClipper(shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10)))),
-                                      child: Container(
-                                          decoration:
-                                          BoxDecoration(
-                                            border: Border(
-                                              left: BorderSide(
-                                                  style: BorderStyle.solid,
-                                                  width: 6,
-                                                  color: Color(int.parse(note.color))
-                                              ),
-                                            ),
-                                            // borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          margin: EdgeInsets.only( bottom: 1 ),
-                                          child: NotedData(
-                                                notedValue: note.note
-                                              )
-                                          ),
-                                      );
-
-                                  },
-                                ),
-                              ))
-                        ],
+                    Center(
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(top: 2, left: 7, right: 5),
+                        child: Align(
+                            alignment: Alignment.topRight,
+                            child: NoteButton(
+                                onPressed: () => onPressedNote(modalDateNote))),
                       ),
                     ),
-                  ),
-                  _selectedEvents.isNotEmpty ? GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDay!);
-
-                        return DetailNotes(date: formattedDate.toString(), dateFormat:  formatterModalNote.format(selectedDate!).toString(),);
-                      },
-                    )), 
-                     
-                    child: Align(
-                      alignment: Alignment.bottomRight,
+                    Center(
                       child: Padding(
                         padding: EdgeInsets.only(
-                          right: size.width * 0.04,
-                          bottom: size.height * 0.04
-                        ),
-                        child: Text.rich(
-                          TextSpan(
-                            children : [
-                              TextSpan(
-                                text: 'Detail',
-                                style: TextStyle(
-                                  color: kBluePrimary,
-                                  fontFamily: 'RobotoMedium',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500
-                                )
+                            top: 2,
+                            left: 7,
+                            right: 5,
+                            bottom: size.height * .03),
+                        child: Column(
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    top: 10, left: size.width * .025, right: 5),
+                                child: const Text('Noted',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        fontFamily: 'RobotoMedium',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500)),
                               ),
-                              WidgetSpan(
-                                child: SvgPicture.asset('assets/svg/arrow_right.svg'),
-                              ),
-                            ]
-                          )
+                            ),
+                            Container(
+                                height: size.height * 0.06,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(7.0),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                                          offset: Offset(0, 2),
+                                          blurRadius: 2,
+                                          spreadRadius: 0)
+                                    ]),
+                                margin: const EdgeInsets.all(8.0),
+                                child: _selectedEvents.isEmpty
+                                    ? ClipPath(
+                                        clipper: const ShapeBorderClipper(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)))),
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                              border: Border(
+                                                left: BorderSide(
+                                                    style: BorderStyle.solid,
+                                                    width: 6,
+                                                    color: Colors.white),
+                                              ),
+                                              // borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            margin: EdgeInsets.only(bottom: 1),
+                                            child: NoteDataEmpty()),
+                                      )
+                                    : Scrollbar(
+                                        hoverThickness: 2,
+                                        isAlwaysShown: true,
+                                        interactive: true,
+                                        controller: _scrollController,
+                                        thickness: 5,
+                                        child: ListView.builder(
+                                          controller: _scrollController,
+                                          itemCount: _selectedEvents.length,
+                                          itemBuilder: (context, index) {
+                                            EmployeeNote note =
+                                                _selectedEvents[index];
+                                            return ClipPath(
+                                              clipper: const ShapeBorderClipper(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  10)))),
+                                              child: Container(
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                      left: BorderSide(
+                                                          style:
+                                                              BorderStyle.solid,
+                                                          width: 6,
+                                                          color: Color(
+                                                              int.parse(
+                                                                  note.color))),
+                                                    ),
+                                                    // borderRadius: BorderRadius.circular(10),
+                                                  ),
+                                                  margin: EdgeInsets.only(
+                                                      bottom: 1),
+                                                  child: NotedData(
+                                                      notedValue: note.note)),
+                                            );
+                                          },
+                                        ),
+                                      ))
+                          ],
                         ),
                       ),
                     ),
-                  ) : Text('')
-                ],
-              ),
-            );
+                    _selectedEvents.isNotEmpty
+                        ? GestureDetector(
+                            onTap: () =>
+                                Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                String formattedDate = DateFormat('yyyy-MM-dd')
+                                    .format(selectedDay!);
+
+                                return DetailNotes(
+                                  date: formattedDate.toString(),
+                                  dateFormat: formatterModalNote
+                                      .format(selectedDate!)
+                                      .toString(),
+                                );
+                              },
+                            )),
+                            child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    right: size.width * 0.04,
+                                    bottom: size.height * 0.04),
+                                child: Text.rich(TextSpan(children: [
+                                  TextSpan(
+                                      text: 'Detail',
+                                      style: TextStyle(
+                                          color: kBluePrimary,
+                                          fontFamily: 'RobotoMedium',
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500)),
+                                  WidgetSpan(
+                                    child: SvgPicture.asset(
+                                        'assets/svg/arrow_right.svg'),
+                                  ),
+                                ])),
+                              ),
+                            ),
+                          )
+                        : Text('')
+                  ],
+                ),
+              );
+            } else {
+              return ShimmerCalendarLoading();
+            }
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return ShimmerCalendarLoading();
+          } else if (snapshot.connectionState == ConnectionState.active) {
+            return ShimmerCalendarLoading();
           } else {
-            return ShimmerCalendarLoading();
-          }
-        } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return ShimmerCalendarLoading();
-        } else if (snapshot.connectionState == ConnectionState.active) {
-            return ShimmerCalendarLoading();
-        } else {
             return ScaffoldMessenger(child: Text('Tidak Ada Koneksi Internet'));
-        }
-      }
-    );
+          }
+        });
   }
 }
-
-
-
-
-
-
 
 class HomeTwo extends StatelessWidget {
   const HomeTwo({Key? key}) : super(key: key);
