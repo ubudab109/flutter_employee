@@ -7,8 +7,10 @@ import 'package:employee_management/apps/model/employee_note/employee_note.dart'
 import 'package:employee_management/apps/provider/user/user_provider.dart';
 import 'package:employee_management/apps/repository/auth_repository.dart';
 import 'package:employee_management/apps/repository/note_data_repository.dart';
+import 'package:employee_management/pages/detail_notes/detail_notes.dart';
 import 'package:employee_management/pages/home/components/carousel_hightlight.dart';
 import 'package:employee_management/pages/home/components/circle_button_note.dart';
+import 'package:employee_management/pages/home/components/note_data_empty.dart';
 import 'package:employee_management/pages/home/components/noted_data.dart';
 import 'package:employee_management/pages/home/components/selected_time_note.dart';
 import 'package:employee_management/pages/home/components/shimmer_calender.dart';
@@ -35,7 +37,6 @@ class _HomeMainState extends State<HomeMain> {
 
   // initialize future note data
   late Future<List<EmployeeNote>> noteDataFuture;
-  List<EmployeeNote> employeeNoteData = [];
 
   // provider user (To Get User Auth Data)
   UserProvider? userProvider;
@@ -143,9 +144,6 @@ class _HomeMainState extends State<HomeMain> {
         employeeNotes.add(employeeNote);
       }
     }
-    setState(() {
-      employeeNoteData = employeeNotes;
-    });
     return employeeNotes;
   }
 
@@ -208,7 +206,6 @@ class _HomeMainState extends State<HomeMain> {
                                 // TOP CONTENT
                                 Container(
                                   color: kPrimaryColor,
-                                  height: size.height * 0.48,
                                   width: double.infinity,
                                   child: Stack(
                                     children: <Widget>[
@@ -253,33 +250,56 @@ class _HomeMainState extends State<HomeMain> {
                                           )),
                                       Container(
                                         alignment: Alignment.bottomCenter,
-                                        height: size.height * 0.43,
                                         width: double.infinity,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: const <Widget>[
-                                            MenuIconHome(
-                                              onPressed: null,
-                                              icon: 'jadwal_kerja.png',
-                                              iconName: 'Jadwal Kerja',
-                                            ),
-                                            MenuIconHome(
-                                              onPressed: null,
-                                              icon: 'Gaji.png',
-                                              iconName: 'Gaji',
-                                            ),
-                                            MenuIconHome(
-                                              onPressed: null,
-                                              icon: 'Paidleave.png',
-                                              iconName: 'Request Jadwal',
-                                            ),
-                                            MenuIconHome(
-                                              onPressed: null,
-                                              icon: 'Bonus.png',
-                                              iconName: 'Bonus',
-                                            ),
-                                          ],
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                            top: size.height * 0.33
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.spaceEvenly,
+                                                children: const <Widget>[
+                                                  MenuIconHome(
+                                                    onPressed: null,
+                                                    icon: 'jadwal_kerja.png',
+                                                    iconName: 'Jadwal Kerja',
+                                                  ),
+                                                  MenuIconHome(
+                                                    onPressed: null,
+                                                    icon: 'Gaji.png',
+                                                    iconName: 'Gaji',
+                                                  ),
+                                                  MenuIconHome(
+                                                    onPressed: null,
+                                                    icon: 'Paidleave.png',
+                                                    iconName: 'Request Jadwal',
+                                                  ),
+                                                  MenuIconHome(
+                                                    onPressed: null,
+                                                    icon: 'data_rekening.png',
+                                                    iconName: 'Data Rekening',
+                                                  ),        
+                                                ],
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.all(22.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: const <Widget>[
+                                                    MenuIconHome(
+                                                      onPressed: null,
+                                                      icon: 'peringatan.png',
+                                                      iconName: 'Peringatan',
+                                                    ),
+                                                    
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -361,10 +381,21 @@ class _HomeMainState extends State<HomeMain> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // TOP HEADER MODAL BUTTON
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Center(
-                child: Image.asset('assets/images/top_modal.png'),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  time = TimeOfDay.now();
+                  isTimeSelected = false;
+                  colorNote = '0x0fffffff';
+                });
+                noteText.clear();
+                Navigator.of(context).pop();
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Center(
+                  child: Image.asset('assets/images/top_modal.png'),
+                ),
               ),
             ),
 
@@ -617,6 +648,9 @@ class _HomeMainState extends State<HomeMain> {
                           await createNoteEmployee();
                           Navigator.pop(context);
                           setState(() {
+                            time = TimeOfDay.now();
+                            isTimeSelected = false;
+                            colorNote = '0x0fffffff';
                             noteDataFuture = getNoteEmployee();
                           });
                         } ,
@@ -668,10 +702,17 @@ class _HomeMainState extends State<HomeMain> {
             builder: (context, setState) =>  _modalBottomSheet(context, date, size, setState),
           );
         },
-      );
+      ).whenComplete(() {
+        setState(() {
+          time = TimeOfDay.now();
+          isTimeSelected = false;
+          colorNote = '0x0fffffff';
+        });
+        noteText.clear();
+      });
     }
 
-  /// event change for selected day in calender
+    /// event change for selected day in calender
     void _onDaySelected(DateTime selectedDays, DateTime focusedDays) {
       if (!isSameDay(selectedDay, selectedDays)) {
         setState(() {
@@ -689,6 +730,8 @@ class _HomeMainState extends State<HomeMain> {
       }
     }
 
+
+    /// On range selected
     void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDays) {
       setState(() {
         selectedDay = null;
@@ -933,7 +976,14 @@ class _HomeMainState extends State<HomeMain> {
                     ),
                   ),
                   _selectedEvents.isNotEmpty ? GestureDetector(
-                    onTap: () => print('work'),
+                    onTap: () => Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDay!);
+
+                        return DetailNotes(date: formattedDate.toString(), dateFormat:  formatterModalNote.format(selectedDate!).toString(),);
+                      },
+                    )), 
+                     
                     child: Align(
                       alignment: Alignment.bottomRight,
                       child: Padding(
@@ -962,10 +1012,6 @@ class _HomeMainState extends State<HomeMain> {
                       ),
                     ),
                   ) : Text('')
-                  // Align(
-                  //   alignment: Alignment.topRight,
-                  //   child: _selectedEvents.isNotEmpty,
-                  // )
                 ],
               ),
             );
@@ -988,29 +1034,7 @@ class _HomeMainState extends State<HomeMain> {
 
 
 
-class NoteDataEmpty extends StatelessWidget {
-  const NoteDataEmpty({ Key? key }) : super(key: key);
-  
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration:
-          BoxDecoration(
-            border: Border(
-            left: BorderSide(
-                style: BorderStyle.solid,
-                width: 6,
-                color: Colors.white
-            ),
-          ),
-        // borderRadius: BorderRadius.circular(10),
-      ),
-      margin: EdgeInsets.only( bottom: 0 ),
-      child: NotedData(
-        notedValue: 'Tidak Ada Catatan Pada Tanggal Yang Dipilih'
-      ));
-  }
-}
+
 
 class HomeTwo extends StatelessWidget {
   const HomeTwo({Key? key}) : super(key: key);

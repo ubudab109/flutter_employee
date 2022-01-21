@@ -3,6 +3,30 @@
 import 'dart:convert';
 
 
+class EmployeeNoteByDate {
+  final String id;
+  final String color;
+  final String time;
+  final String note;
+
+  EmployeeNoteByDate({
+    required this.id,
+    required this.color,
+    required this.time,
+    required this.note,
+  });
+
+  factory EmployeeNoteByDate.fromJson(Map<String, dynamic> json) {
+    return EmployeeNoteByDate(
+      id: json['id'], 
+      color: json['color'], 
+      time: json['time'], 
+      note: json['note']
+    );
+  }
+
+}
+
 
 class EmployeeNote {
   final String id;

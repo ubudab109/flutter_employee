@@ -65,4 +65,22 @@ class NoteDataRepository {
       return e;
     }
   }
+
+  /*
+   * DELETE NOTE DATA USER BY ID
+   * String Token
+   * int id of note data
+   * return jsonResponse
+  */
+  Future deleteNoteData(String token, int id) async {
+    try {
+      var response = await http.delete(Uri.parse('$urlBackend/v1/home/note/$id'), headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      });
+      return response;
+    } catch (e) {
+      return e;
+    }
+  }
 }
