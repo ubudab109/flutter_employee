@@ -130,7 +130,6 @@ class _HomeMainState extends State<HomeMain> {
     http.Response response = await NoteDataRepository().getNoteDate(token);
     var map = json.decode(response.body)['data'];
     List<EmployeeNote> employeeNotes = [];
-    
 
     if (map != null) {
       for (var value in map) {
@@ -144,6 +143,8 @@ class _HomeMainState extends State<HomeMain> {
         employeeNotes.add(employeeNote);
       }
     }
+
+    // print(employeeNotes);
     return employeeNotes;
   }
 

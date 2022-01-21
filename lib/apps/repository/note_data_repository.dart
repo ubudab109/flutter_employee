@@ -12,7 +12,7 @@ class NoteDataRepository {
     try {
       var response =
           await http.get(Uri.parse('$urlBackend/v1/home/event-note'), headers: {
-        'Authorization': 'Bearer 76|hQ0wbQK24WMvwZjaTuFDjizBvrmuobdnacMnE50i',
+        'Authorization': 'Bearer $token',
         'Accept': 'application/json'
       });
       return response;
