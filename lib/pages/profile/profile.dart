@@ -12,7 +12,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -38,26 +37,20 @@ class _ProfileState extends State<Profile> {
       if (image == null) return;
       var token = await AuthRepository().hasToken();
       final imageTemp = File(image.path);
-      var res =
-          await UserDataRepository().uploadPictureImages(token, imageTemp.path);
-
-      if (res) {
-        setState(() {
-          this.image = imageTemp;
-          uploadingImage = false;
-        });
-      } else {
-        setState(() {
-          uploadingImage = false;
-        });
+      var res = await UserDataRepository().uploadPictureImages(token, imageTemp.path);
+      if (res != 'Upload Success') {
         showSnackBarError(context);
         return;
       }
+      setState(() {
+        uploadingImage = false;
+      });
     } on PlatformException catch (_) {
       return false;
     }
   }
 
+  // Snackbar if upload image fail
   void showSnackBarError(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text('Upload Image Gagal. Maksimal Gambar Adalah 2MB'),
@@ -77,11 +70,7 @@ class _ProfileState extends State<Profile> {
           create: (context) => UserProvider(),
         ),
       ],
-      child: uploadingImage
-          ? Center(
-              child: Text('Sedang Mengunggah Gambar.....'),
-            )
-          : Scaffold(
+      child: Scaffold(
               appBar: AppBar(
                   title: const Text('Profile'),
                   backgroundColor: kBluePrimary,
@@ -119,6 +108,8 @@ class _ProfileState extends State<Profile> {
                                               top: size.height * 0.02),
                                           child: Stack(
                                             children: [
+                                              uploadingImage ? AvatarUploading(images: NetworkImage('https://thumbs.gfycat.com/ImpureImpassionedAcornbarnacle-size_restricted.gif'))
+                                              :
                                               AvatarUserProfile(
                                                 images: image != null
                                                     ? FileImage(image!)
@@ -440,6 +431,22 @@ class UserContactData extends StatelessWidget {
 
 class AvatarUserProfile extends StatelessWidget {
   const AvatarUserProfile({
+    Key? key,
+    required this.images,
+  }) : super(key: key);
+  final images;
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      backgroundImage: images,
+      radius: 78,
+      backgroundColor: themePrimayColor,
+    );
+  }
+}
+
+class AvatarUploading extends StatelessWidget {
+  const AvatarUploading({
     Key? key,
     required this.images,
   }) : super(key: key);

@@ -14,7 +14,7 @@ class NotedData extends StatelessWidget {
         enabled: false,
         maxLines: null,
         scrollController: ScrollController(),
-        style: TextStyle(
+        style: const TextStyle(
             fontFamily: 'RobotoMedium',
             fontSize: 12,
             fontWeight: FontWeight.w400),

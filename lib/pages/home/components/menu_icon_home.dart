@@ -20,7 +20,7 @@ class MenuIconHome extends StatelessWidget {
         IconButton(
           iconSize: 50,
           icon: Image.asset('assets/images/$icon'),
-          onPressed: () {},
+          onPressed: onPressed,
         ),
         Text(
           iconName,

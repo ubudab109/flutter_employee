@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:employee_management/utils/constant.dart';
 import 'package:http/http.dart' as http;
@@ -26,25 +25,25 @@ class UserDataRepository {
    * String Token
    * return jsonResponse
   */
-  Future<bool> uploadPictureImages(String token, String file) async {
+  Future<String> uploadPictureImages(String token, String file) async {
     try {
       String addimageUrl = '$urlBackend/v1/profile/picture';
       Map<String, String> headers = {
         'Authorization': 'Bearer $token',
         'Content-Type': 'multipart/form-data',
       };
-      var request = http.MultipartRequest('POST', Uri.parse(addimageUrl))
-        ..headers.addAll(headers)
-        ..files.add(await http.MultipartFile.fromPath('file', file));
+      var request = http.MultipartRequest('POST', Uri.parse(addimageUrl));
+      request.headers.addAll(headers);
+      request.files.add(await http.MultipartFile.fromPath('file', file));
+
       var response = await request.send();
-      print('status kode ${response.stream}');
       if (response.statusCode == 200) {
-        return true;
+        return 'Upload Success';
       } else {
-        return false;
+        return 'Harap Periksa Gambar Anda. Maksimal Gambar Adalah 2 MB dan Format Yang Diperbolehkan Hanya JPG, JPEG dan PNG';
       }
     } catch (e) {
-      return false;
+      return 'Server Error';
     }
   }
 }

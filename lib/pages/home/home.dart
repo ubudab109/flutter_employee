@@ -14,6 +14,7 @@ import 'package:employee_management/pages/home/components/note_data_empty.dart';
 import 'package:employee_management/pages/home/components/noted_data.dart';
 import 'package:employee_management/pages/home/components/selected_time_note.dart';
 import 'package:employee_management/pages/home/components/shimmer_calender.dart';
+import 'package:employee_management/pages/salary/salary.dart';
 import 'package:flutter/material.dart';
 import 'package:employee_management/pages/home/components/card_attendance_time.dart';
 import 'package:employee_management/pages/home/components/menu_icon_home.dart';
@@ -270,14 +271,16 @@ class _HomeMainState extends State<HomeMain> {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
                                                         .spaceEvenly,
-                                                children: const <Widget>[
+                                                children: <Widget>[
                                                   MenuIconHome(
                                                     onPressed: null,
                                                     icon: 'jadwal_kerja.png',
                                                     iconName: 'Jadwal Kerja',
                                                   ),
                                                   MenuIconHome(
-                                                    onPressed: null,
+                                                    onPressed: () {
+                                                      Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (context) => ListSalary()));
+                                                    },
                                                     icon: 'Gaji.png',
                                                     iconName: 'Gaji',
                                                   ),
@@ -374,8 +377,7 @@ class _HomeMainState extends State<HomeMain> {
   }
 
   /* Bottom Sheed Modal */
-  Widget _modalBottomSheet(
-      BuildContext context, String date, Size size, StateSetter setStateModal) {
+  Widget _modalBottomSheet(BuildContext context, String date, Size size, StateSetter setStateModal) {
     /* ON PRESSED COLOR NOTE SELECT */
     onPressedColorModal(String value) {
       setStateModal(() {

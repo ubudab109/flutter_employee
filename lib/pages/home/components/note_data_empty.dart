@@ -8,7 +8,7 @@ class NoteDataEmpty extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration:
-          BoxDecoration(
+          const BoxDecoration(
             border: Border(
             left: BorderSide(
                 style: BorderStyle.solid,
@@ -18,8 +18,8 @@ class NoteDataEmpty extends StatelessWidget {
           ),
         // borderRadius: BorderRadius.circular(10),
       ),
-      margin: EdgeInsets.only( bottom: 0 ),
-      child: NotedData(
+      margin: const EdgeInsets.only( bottom: 0 ),
+      child: const NotedData(
         notedValue: 'Tidak Ada Catatan Pada Tanggal Yang Dipilih'
       ));
   }

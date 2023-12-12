@@ -14,7 +14,7 @@ class UserProvider extends ChangeNotifier {
   String _errorMessage = '';
   int? _statusRes;
   bool _isFetching = false;
-
+  bool _disposed = false;
   // GETTERS
   Map<String, dynamic> get userData => _userData;
   bool get error => _error;
@@ -73,5 +73,18 @@ class UserProvider extends ChangeNotifier {
     _errorMessage = '';
     _isFetching = false;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (!_disposed) {
+      super.notifyListeners();
+    }
   }
 }
